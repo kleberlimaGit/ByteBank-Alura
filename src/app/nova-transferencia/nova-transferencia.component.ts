@@ -1,3 +1,5 @@
+import { Transferencia } from './../models/transferencia.models';
+import { TransferenciaService } from './../services/transferencia.service';
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
@@ -6,17 +8,25 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./nova-transferencia.component.scss'],
 })
 export class NovaTransferenciaComponent {
-  //Output propaga os dados para fora
-  @Output() aoTransferir = new EventEmitter<any>();
 
-  valor: number = 0;
-  destino:number = 0;
+  valor: number;
+  destino:number;
+
+  constructor(private service:TransferenciaService){
+
+  }
 
   transferir() {
     console.log('Transferindo meu Real');
-    const valorAgTransferencia = {valor:this.valor,destino:this.destino}
-    this.aoTransferir.emit(valorAgTransferencia);
-    this.limparCampos();
+    const valorAgTransferencia :Transferencia = {valor:this.valor,destino:this.destino}
+
+    this.service.adicionar(valorAgTransferencia).subscribe(response => {
+      console.log(response);
+      this.limparCampos();
+    },
+    error => console.log(error)
+
+    );
   }
   limparCampos(){
     this.valor = 0;

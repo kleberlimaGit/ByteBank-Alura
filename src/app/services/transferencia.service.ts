@@ -22,9 +22,9 @@ constructor(private httpClient: HttpClient) {
   todasTransferencias(): Observable<Transferencia[]>{
     return this.httpClient.get<Transferencia[]>(this.url);
   }
-  adicionar(transferencia: any){
+  adicionar(transferencia: Transferencia): Observable<Transferencia>{
     this.dataInstante(transferencia);
-    this.transferencias.push(transferencia);
+    return this.httpClient.post<Transferencia>(this.url,transferencia)
   }
 
   private dataInstante(transferencia: any){
